@@ -16,7 +16,7 @@ public class Main {
 
 			String firstInput=s.nextLine();
 			firstInput=firstInput.trim();
-
+			
 			String secondInput=s.nextLine();
 			secondInput=secondInput.trim();
 			int userInput=Integer.parseInt(secondInput);
@@ -26,7 +26,7 @@ public class Main {
 				input1=s.next();
 				input2=s.next();
 			}
-
+			
 			//String firstInput="input1.txt";
 
 			File file = new File(firstInput);
@@ -41,60 +41,47 @@ public class Main {
 			int counter=0;
 			while(s.hasNext()) {
 				String newWord=s.next();
+				newWord=newWord.toLowerCase();
 				//System.out.println(newWord);
 				trie.put(newWord, newWord);
 			}
-
+			
 			System.out.println();
-
+			
 			while(userInput!=-1) {
-
-				
+								
 				userInput=Integer.parseInt(secondInput);
 				if(userInput==1) {
 
-
+					input=input.toLowerCase();
 					if(trie.Search(input)) {
 						System.out.println("True");
 					}else {
 						System.out.println("False");
 					}
 					userInput=-1;
-					
-					
-					
 				}else if(userInput==2) {
 
 					trie.autoComplete(input);
 					userInput=-1;
-					
-					
-					
 				}else if(userInput==3) {
 
 					trie.reverseAutoComplete(input);
 					userInput=-1;
-					
-					
-					
 				}else if(userInput==4) {
 
 					trie.FullAutoComplete(input1, input2);
 					userInput=-1;
-					
-					
-					
 				}else if(userInput==5) {
+					// use howMany value for this method
+					int howMany=Integer.parseInt(input);
 					System.out.println("Not coded");
 					userInput=-1;
-					
-					
-					
 				}else if(userInput==6) {
 					System.out.println("give a puzzle adrress");
-
-
-
+					
+					
+					
 					//File puzzleFile = new File("puzzle1.txt");
 					File puzzleFile = new File(input);
 
