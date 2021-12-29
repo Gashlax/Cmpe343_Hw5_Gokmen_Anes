@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
@@ -29,9 +31,9 @@ public class Main {
 				trie.put(newWord, newWord);
 			}
 			System.out.println();
-			s=new Scanner(System.in);
 			int userInput=0;
 			while(userInput!=-1) {
+				s=new Scanner(System.in);
 				System.out.println("Please select method");
 				System.out.println("1-Search");
 				System.out.println("2-AutoComplete");
@@ -72,8 +74,139 @@ public class Main {
 					System.out.println("Not coded");
 
 				}else if(userInput==6) {
-					System.out.println("Not coded");
+					System.out.println("give a puzzle adrress");
+					//s=new Scanner(System.in);
+					//					String input1=s.nextLine();
+					//					input1=input1.trim();
 
+					File puzzleFile = new File("puzzle1.txt");
+
+					s=new Scanner(puzzleFile);
+
+					int rowCounter=0;
+					int collumnCounter=0;
+
+
+					String[][] puzzleArray;
+					String line=s.nextLine();
+					String[] toCount= line.split("\\s+");
+
+					collumnCounter=toCount.length;
+					//System.out.println(collumnCounter+" şlensdfsdf");
+
+					while(s.hasNextLine()){
+						String lineCounter=s.nextLine();
+						rowCounter++;
+					}
+					puzzleArray=new String[rowCounter+1][collumnCounter];
+					s=new Scanner(puzzleFile);
+
+
+					rowCounter=0;
+					while(s.hasNextLine()){
+						String oneLine=s.nextLine();
+						String[] oneLineStringArray= oneLine.split("\\s+");
+						//System.out.println(oneLine);
+						for(int t=0;t<collumnCounter;t++) {
+							puzzleArray[rowCounter][t]=oneLineStringArray[t];
+							//System.out.println(rowCounter+" a "+ t);
+
+						}
+						rowCounter++;
+					}
+
+					ArrayList<String> words = new ArrayList<String>(); 	
+					
+					for(int curRow=0;curRow<puzzleArray.length;curRow++) {
+						for(int curCol=0;curCol<puzzleArray[0].length;curCol++) {
+							
+							if(trie.Search(puzzleArray[curRow][curCol])) {
+								words.add(puzzleArray[curRow][curCol]);
+							}
+							
+							StringBuilder word = new StringBuilder(puzzleArray[curRow][curCol]);
+							
+							//right
+							for(int toRight=curCol+1;toRight<puzzleArray[0].length ; toRight++) {
+								word.append(puzzleArray[curRow][toRight]);
+								String currentWord=word.toString();
+								
+								if(trie.Search(currentWord)) {
+									words.add(currentWord);
+								}
+
+							}
+							
+							word = new  StringBuilder(puzzleArray[curRow][curCol]);
+							//to Bottom
+							for(int toBottom=curRow+1;toBottom<puzzleArray.length ; toBottom++) {
+								word.append(puzzleArray[toBottom][curCol]);
+								String currentWord=word.toString();
+								
+								if(trie.Search(currentWord)) {
+									words.add(currentWord);
+								}
+
+							}
+							
+							
+							word = new  StringBuilder(puzzleArray[curRow][curCol]);
+							// to Diagonall
+							
+							for(int toBottom=curRow+1, toRight=curCol+1 ; toBottom<puzzleArray.length && toRight<puzzleArray[0].length ; toBottom++,toRight++) {
+								word.append(puzzleArray[toBottom][toRight]);
+								String currentWord=word.toString();
+								
+								if(trie.Search(currentWord)) {
+									words.add(currentWord);
+								}
+
+							}
+							
+						}
+					}
+					
+//					for(int t=0;t<words.size();t++) {
+//						System.out.println(words.get(t));
+//					}
+
+					ArrayList<String> newList = new ArrayList<String>();
+					  
+			        // Traverse through the first list
+			        for (String check : words) {
+			  
+			            // If this element is not present in newList
+			            // then add it
+			            if (!newList.contains(check)) {
+			  
+			                newList.add(check);
+			            }
+			        }
+			        words=newList;
+			        newList=null;
+			        Collections.sort(words);
+					for(int t=0;t<words.size();t++) {
+						if(t==0) {
+							System.out.print(words.get(t));
+						}else {
+							System.out.print(", "+words.get(t));
+						}
+						
+					}
+					
+			  
+//
+//					for(int row=0;row<puzzleArray.length;row++) {
+//						for(int col=0;col<puzzleArray[0].length;col++) {
+//							System.out.print(puzzleArray[row][col]+" ");
+//						}
+//						System.out.println();
+//					}
+//
+
+
+					//to test
+					userInput=-1;
 				}else {
 					userInput=-1;
 				}
@@ -94,8 +227,8 @@ public class Main {
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
-			System.out.println("PLease give valid inputs to the system");
+			e.printStackTrace();
+			//System.out.println("PLease give valid inputs to the system");
 		}
 	}
 
