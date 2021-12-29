@@ -8,12 +8,26 @@ public class Main {
 
 	public static void main(String[] args) {
 
+		String input=null;
+		String input1 = null;
+		String input2=null;
 		try {
 			Scanner s=new Scanner(System.in);
 
-			//String firstInput=s.nextLine();
-			//firstInput=firstInput.trim();
-			String firstInput="input1.txt";
+			String firstInput=s.nextLine();
+			firstInput=firstInput.trim();
+
+			String secondInput=s.nextLine();
+			secondInput=secondInput.trim();
+			int userInput=Integer.parseInt(secondInput);
+			if(userInput==1 || userInput==2 || userInput==3 || userInput==5 || userInput==6 ) {
+				input=s.nextLine();
+			}else if(userInput==4) {
+				input1=s.next();
+				input2=s.next();
+			}
+
+			//String firstInput="input1.txt";
 
 			File file = new File(firstInput);
 
@@ -30,56 +44,59 @@ public class Main {
 				//System.out.println(newWord);
 				trie.put(newWord, newWord);
 			}
-			System.out.println();
-			int userInput=0;
-			while(userInput!=-1) {
-				s=new Scanner(System.in);
-				System.out.println("Please select method");
-				System.out.println("1-Search");
-				System.out.println("2-AutoComplete");
-				System.out.println("3-ReverseAutoComplete");
-				System.out.println("4-FullComplete");
-				System.out.println("5-findTopK");
-				System.out.println("6-SolvePuzzle");
-				System.out.println("Any other number quit");
-				userInput=s.nextInt();
 
+			System.out.println();
+
+			while(userInput!=-1) {
+
+				
+				userInput=Integer.parseInt(secondInput);
 				if(userInput==1) {
-					System.out.println("Give a input");
-					String input=s.next();
+
 
 					if(trie.Search(input)) {
 						System.out.println("True");
 					}else {
 						System.out.println("False");
 					}
-
+					userInput=-1;
+					
+					
+					
 				}else if(userInput==2) {
-					System.out.println("Give a input");
-					String input=s.next();
+
 					trie.autoComplete(input);
-
+					userInput=-1;
+					
+					
+					
 				}else if(userInput==3) {
-					System.out.println("Give a input");
-					String input=s.next();
+
 					trie.reverseAutoComplete(input);
-
+					userInput=-1;
+					
+					
+					
 				}else if(userInput==4) {
-					System.out.println("Give seperate two inputs");
-					String input1=s.next();
-					String input2=s.next();
-					trie.FullAutoComplete(input1, input2);
 
+					trie.FullAutoComplete(input1, input2);
+					userInput=-1;
+					
+					
+					
 				}else if(userInput==5) {
 					System.out.println("Not coded");
-
+					userInput=-1;
+					
+					
+					
 				}else if(userInput==6) {
 					System.out.println("give a puzzle adrress");
-					//s=new Scanner(System.in);
-					//					String input1=s.nextLine();
-					//					input1=input1.trim();
 
-					File puzzleFile = new File("puzzle1.txt");
+
+
+					//File puzzleFile = new File("puzzle1.txt");
+					File puzzleFile = new File(input);
 
 					s=new Scanner(puzzleFile);
 
@@ -116,93 +133,93 @@ public class Main {
 					}
 
 					ArrayList<String> words = new ArrayList<String>(); 	
-					
+
 					for(int curRow=0;curRow<puzzleArray.length;curRow++) {
 						for(int curCol=0;curCol<puzzleArray[0].length;curCol++) {
-							
+
 							if(trie.Search(puzzleArray[curRow][curCol])) {
 								words.add(puzzleArray[curRow][curCol]);
 							}
-							
+
 							StringBuilder word = new StringBuilder(puzzleArray[curRow][curCol]);
-							
+
 							//right
 							for(int toRight=curCol+1;toRight<puzzleArray[0].length ; toRight++) {
 								word.append(puzzleArray[curRow][toRight]);
 								String currentWord=word.toString();
-								
+
 								if(trie.Search(currentWord)) {
 									words.add(currentWord);
 								}
 
 							}
-							
+
 							word = new  StringBuilder(puzzleArray[curRow][curCol]);
 							//to Bottom
 							for(int toBottom=curRow+1;toBottom<puzzleArray.length ; toBottom++) {
 								word.append(puzzleArray[toBottom][curCol]);
 								String currentWord=word.toString();
-								
+
 								if(trie.Search(currentWord)) {
 									words.add(currentWord);
 								}
 
 							}
-							
-							
+
+
 							word = new  StringBuilder(puzzleArray[curRow][curCol]);
 							// to Diagonall
-							
+
 							for(int toBottom=curRow+1, toRight=curCol+1 ; toBottom<puzzleArray.length && toRight<puzzleArray[0].length ; toBottom++,toRight++) {
 								word.append(puzzleArray[toBottom][toRight]);
 								String currentWord=word.toString();
-								
+
 								if(trie.Search(currentWord)) {
 									words.add(currentWord);
 								}
 
 							}
-							
+
 						}
 					}
-					
-//					for(int t=0;t<words.size();t++) {
-//						System.out.println(words.get(t));
-//					}
+
+					//					for(int t=0;t<words.size();t++) {
+					//						System.out.println(words.get(t));
+					//					}
 
 					ArrayList<String> newList = new ArrayList<String>();
-					  
-			        // Traverse through the first list
-			        for (String check : words) {
-			  
-			            // If this element is not present in newList
-			            // then add it
-			            if (!newList.contains(check)) {
-			  
-			                newList.add(check);
-			            }
-			        }
-			        words=newList;
-			        newList=null;
-			        Collections.sort(words);
+
+					// Traverse through the first list
+					for (String check : words) {
+
+						// If this element is not present in newList
+						// then add it
+						if (!newList.contains(check)) {
+
+							newList.add(check);
+						}
+					}
+					words=newList;
+					newList=null;
+					Collections.sort(words);
 					for(int t=0;t<words.size();t++) {
 						if(t==0) {
 							System.out.print(words.get(t));
 						}else {
 							System.out.print(", "+words.get(t));
 						}
-						
+
 					}
-					
-			  
-//
-//					for(int row=0;row<puzzleArray.length;row++) {
-//						for(int col=0;col<puzzleArray[0].length;col++) {
-//							System.out.print(puzzleArray[row][col]+" ");
-//						}
-//						System.out.println();
-//					}
-//
+
+
+					//
+					//					for(int row=0;row<puzzleArray.length;row++) {
+					//						for(int col=0;col<puzzleArray[0].length;col++) {
+					//							System.out.print(puzzleArray[row][col]+" ");
+					//						}
+					//						System.out.println();
+					//					}
+					//
 
 
 					//to test
