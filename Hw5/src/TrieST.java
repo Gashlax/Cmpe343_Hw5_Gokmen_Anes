@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  *  The {@code TrieST} class represents an symbol table of key-value
@@ -12,7 +15,7 @@
  *  when associating a value with a key that is already in the symbol table,
  *  the convention is to replace the old value with the new value.
  *  Unlike {@link java.util.Map}, this class uses the convention that
- *  values cannot be {@code null}—setting the
+ *  values cannot be {@code null}ï¿½setting the
  *  value associated with a key to {@code null} is equivalent to deleting the key
  *  from the symbol table.
  *  <p>
@@ -32,11 +35,15 @@ public class TrieST<Value> {
 
 	private Node root;      // root of trie
 	private int n;          // number of keys in trie
+	private static ArrayList<Node> occurances = new ArrayList<Node>();
+
 
 	// R-way trie node
 	private static class Node {
 		private Object val;
 		private Node[] next = new Node[R];
+		private int occurance = 0;
+
 	}
 
 	/**
@@ -203,10 +210,16 @@ public class TrieST<Value> {
 		if (d == key.length()) {
 			if (x.val == null) n++;
 			x.val = val;
+			if(occurances.contains(x)){
+				x.occurance++;
+			} else {occurances.add(x); x.occurance++;}
 			return x;
 		}
 		char c = key.charAt(d);
 		x.next[c] = put(x.next[c], key, val, d+1);
+		if(occurances.contains(x)){
+				x.occurance++;
+			} else {occurances.add(x); x.occurance++;}
 		return x;
 	}
 
@@ -349,5 +362,42 @@ public class TrieST<Value> {
 			if (x.next[c] != null)
 				return x;
 		return null;
+	}
+
+	public void findTopK(int count){
+		//-------------------------------------------------------- 
+		// Summary: Finds and prints the top k words that have most occurances
+		// Precondition: Having the words stored already - so that they can be found
+		// Postcondition: The number of words specified by user is printed in lex. order
+		//--------------------------------------------------------
+		Collections.sort(occurances, new Comparator<Node>() {
+			@Override
+			public int compare(TrieST.Node o1, TrieST.Node o2) {
+				if (o1.occurance < o2.occurance){
+					return 1;
+				} else if (o1.occurance > o2.occurance){
+					return -1;
+				} else{
+					return 0;
+				}
+			}			
+		});
+
+		ArrayList<Node> findTopOccurances = new ArrayList<>();
+
+		for(Node x : occurances){
+			String value = ""+x.val;
+			// System.out.println(value+" 				TESTTT");
+			if (!value.equals("null")){
+				// test.remove(x);
+				findTopOccurances.add(x);
+			}
+		}
+
+		int i = 0;
+		for(; i < count-1; i ++){
+			System.out.print(findTopOccurances.get(i).val +", ");
+		}
+		System.out.println(findTopOccurances.get(i).val);
 	}
 }

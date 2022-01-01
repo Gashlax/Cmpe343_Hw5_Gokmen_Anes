@@ -75,7 +75,7 @@ public class Main {
 				}else if(userInput==5) {
 					// use howMany value for this method
 					int howMany=Integer.parseInt(input);
-					System.out.println("Not coded");
+					trie.findTopK(howMany);
 					userInput=-1;
 				}else if(userInput==6) {
 					System.out.println("give a puzzle adrress");
