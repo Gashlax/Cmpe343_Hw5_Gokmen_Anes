@@ -1,5 +1,14 @@
+//-----------------------------------------------------
+//Title: Main Class
+//Author: Gökmen ÇAĞLAR - Anes Memisevic
+//ID: 12590403284 - 99363209922
+//Section: 1
+//Assignment: 5
+//Description: This class Main class makes the read operations and uses
+// the other methods.
+//-----------------------------------------------------
+
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -7,26 +16,27 @@ import java.util.Scanner;
 public class Main {
 
 	public static void main(String[] args) {
-
+		// At this point we declare the String inputs
 		String input=null;
 		String input1 = null;
 		String input2=null;
 		try {
 			Scanner s=new Scanner(System.in);
-
+			// This indicates the address of the input text
 			String firstInput=s.nextLine();
 			firstInput=firstInput.trim();
-			
+
 			String secondInput=s.nextLine();
 			secondInput=secondInput.trim();
 			int userInput=Integer.parseInt(secondInput);
+			// To categorize the inputs
 			if(userInput==1 || userInput==2 || userInput==3 || userInput==5 || userInput==6 ) {
 				input=s.nextLine();
 			}else if(userInput==4) {
 				input1=s.next();
 				input2=s.next();
 			}
-			
+
 			//String firstInput="input1.txt";
 
 			File file = new File(firstInput);
@@ -35,23 +45,27 @@ public class Main {
 
 
 			String firstLine = s.nextLine();
+			// Creation of trieSt
 			TrieST trie= new TrieST();
 
 			String str=null;
 			int counter=0;
 			while(s.hasNext()) {
+				//we  put our words to trie
+				//before putting we convert them to lowerCase
 				String newWord=s.next();
 				newWord=newWord.toLowerCase();
 				//System.out.println(newWord);
 				trie.put(newWord, newWord);
 			}
-			
+
 			System.out.println();
-			
+
 			while(userInput!=-1) {
-								
+
 				userInput=Integer.parseInt(secondInput);
 				if(userInput==1) {
+					// It indicates the Search methods
 
 					input=input.toLowerCase();
 					if(trie.Search(input)) {
@@ -60,28 +74,34 @@ public class Main {
 						System.out.println("False");
 					}
 					userInput=-1;
+
 				}else if(userInput==2) {
+					// it indicates the autoComplete
 
 					trie.autoComplete(input);
 					userInput=-1;
 				}else if(userInput==3) {
+					// it indicates the reverseAutoComplete
 
 					trie.reverseAutoComplete(input);
 					userInput=-1;
+
 				}else if(userInput==4) {
+					// it indicates the FullAutoComplete
 
 					trie.FullAutoComplete(input1, input2);
 					userInput=-1;
+
 				}else if(userInput==5) {
-					// use howMany value for this method
+					// it indicates the findTopK
+
 					int howMany=Integer.parseInt(input);
 					trie.findTopK(howMany);
 					userInput=-1;
+
 				}else if(userInput==6) {
-					System.out.println("give a puzzle adrress");
-					
-					
-					
+					// it indicates the puzzle
+
 					//File puzzleFile = new File("puzzle1.txt");
 					File puzzleFile = new File(input);
 
@@ -108,6 +128,7 @@ public class Main {
 
 					rowCounter=0;
 					while(s.hasNextLine()){
+						// This loop creates the 2D array based on the input
 						String oneLine=s.nextLine();
 						String[] oneLineStringArray= oneLine.split("\\s+");
 						//System.out.println(oneLine);
@@ -121,15 +142,19 @@ public class Main {
 
 					ArrayList<String> words = new ArrayList<String>(); 	
 
+					// Based on the 2D array now we can make search operations in 3 ways
 					for(int curRow=0;curRow<puzzleArray.length;curRow++) {
+						// this parts make search for 1 char
 						for(int curCol=0;curCol<puzzleArray[0].length;curCol++) {
 
+							//same time it makes search operations
 							if(trie.Search(puzzleArray[curRow][curCol])) {
 								words.add(puzzleArray[curRow][curCol]);
 							}
 
 							StringBuilder word = new StringBuilder(puzzleArray[curRow][curCol]);
 
+							// this parts make search for right chars
 							//right
 							for(int toRight=curCol+1;toRight<puzzleArray[0].length ; toRight++) {
 								word.append(puzzleArray[curRow][toRight]);
@@ -142,6 +167,8 @@ public class Main {
 							}
 
 							word = new  StringBuilder(puzzleArray[curRow][curCol]);
+
+							// this parts make search for bottom chars
 							//to Bottom
 							for(int toBottom=curRow+1;toBottom<puzzleArray.length ; toBottom++) {
 								word.append(puzzleArray[toBottom][curCol]);
@@ -155,8 +182,9 @@ public class Main {
 
 
 							word = new  StringBuilder(puzzleArray[curRow][curCol]);
-							// to Diagonall
 
+							// this parts make search for Diagonal chars
+							// to Diagonal
 							for(int toBottom=curRow+1, toRight=curCol+1 ; toBottom<puzzleArray.length && toRight<puzzleArray[0].length ; toBottom++,toRight++) {
 								word.append(puzzleArray[toBottom][toRight]);
 								String currentWord=word.toString();
@@ -170,13 +198,13 @@ public class Main {
 						}
 					}
 
-					//					for(int t=0;t<words.size();t++) {
-					//						System.out.println(words.get(t));
-					//					}
+					//for(int t=0;t<words.size();t++) {
+					//	System.out.println(words.get(t));
+					//}
 
 					ArrayList<String> newList = new ArrayList<String>();
 
-					// Traverse through the first list
+					// This for loop used to remove repetitions for example "a" char
 					for (String check : words) {
 
 						// If this element is not present in newList
@@ -188,7 +216,9 @@ public class Main {
 					}
 					words=newList;
 					newList=null;
+					// Then we make sort operation
 					Collections.sort(words);
+					// And print the words
 					for(int t=0;t<words.size();t++) {
 						if(t==0) {
 							System.out.print(words.get(t));
@@ -198,18 +228,6 @@ public class Main {
 
 					}
 
-
-					//
-					//					for(int row=0;row<puzzleArray.length;row++) {
-					//						for(int col=0;col<puzzleArray[0].length;col++) {
-					//							System.out.print(puzzleArray[row][col]+" ");
-					//						}
-					//						System.out.println();
-					//					}
-					//
-
-
-					//to test
 					userInput=-1;
 				}else {
 					userInput=-1;
@@ -219,20 +237,10 @@ public class Main {
 
 			}
 
-
-
-			//			System.out.println(trie.Search("wall"));
-			//			
-			//			//trie.autoComplete("lov");
-			//			trie.reverseAutoComplete("s");
-			//			
-			//			trie.FullAutoComplete("th", "ee");
-			//			trie.FullAutoComplete("th", "eee");
-
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			//System.out.println("PLease give valid inputs to the system");
+			//e.printStackTrace();
+			System.out.println("PLease give valid inputs to the system");
 		}
 	}
 

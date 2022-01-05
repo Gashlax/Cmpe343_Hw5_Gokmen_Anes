@@ -1,9 +1,9 @@
 //-----------------------------------------------------
-// Title: Queue Class
-// Author: Gökmen ÇAĞLAR - Anes Memisevic
-// ID: 12590403284
-// Section: 1
-// Assignment: 5
+//Title: Queue Class
+//Author: Gökmen ÇAĞLAR - Anes Memisevic
+//ID: 12590403284 - 99363209922
+//Section: 1
+//Assignment: 5
 // Description: This class is from our Algorithms, 4th Edition book I used this class to store  
 // Separate chaining keys and while resizing the the table resize properly
 // This is the book solution of this case
